@@ -13,13 +13,13 @@ In order to run the application you need to create a database and run it by code
       create database user_db;
 ```
 
-##Run the application from command line
+## Run the application from command line
 Run the application:
 ```
       mvn spring-boot:run
 ```
 
-###Startup
+### Startup
 On startup application initialises the database and do injection.
 After a startup, you will have next users in the database:
 
@@ -40,7 +40,7 @@ Users:
 
 
 
-###Functionalities
+### Functionalities
 The application allows you as an admin to do next:
 ```
 - login
