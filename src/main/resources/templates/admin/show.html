@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Student Form</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+
+    <link href="../../static/css/spring-core.css"
+          th:href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>
+    <style>
+        div.gallery {
+            margin: 5px;
+            border: 1px solid #ccc;
+            float: left;
+            width: 180px;
+        }
+
+        div.gallery:hover {
+            border: 1px solid #777;
+        }
+
+        div.gallery img {
+            width: 100%;
+            height: auto;
+        }
+
+        div.desc {
+            padding: 15px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-3 mt-5">
+                <h4>Upload files to: <h3 th:text="${gallery.name}"></h3> </h4>
+
+                <form  th:object="${uploadForm}"  th:action="@{/admin/uploadFile}" enctype="multipart/form-data" method="post" >
+
+
+                    <div class="form-group"  th:class="${#fields.hasErrors('photoName')} ? 'form-group has-error' : 'form-group'">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Name of a photo:</label>
+                            <div class="col-sm-8">
+                                <input type="text"
+                                       class="form-control"
+                                       th:field="*{photoName}"
+                                        required="required"
+                                       minlength="4"
+                                       maxlength="60"
+                                />
+                                <span class="help-block">
+                                   <ul>
+                                       <li th:each="err : ${#fields.errors('photoName')}" th:text="${err}" />
+                                   </ul>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+
+                    <div class="form-group"  th:class="${#fields.hasErrors('file')} ? 'form-group has-error' : 'form-group'">
+                        <div class="form-group">
+                        <label class="mr-2">Upload your photo:</label>
+                        <input type="hidden" th:field="*{galleryId}"/>
+                        <input type="file" th:field="*{file}"/>/>
+                            <span class="help-block">
+                                   <ul>
+                                       <li th:each="err : ${#fields.errors('file')}" th:text="${err}" />
+                                   </ul>
+                                </span>
+                        </div>
+                    </div>
+                    <hr>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+
+        <div class="row">
+            <div th:if="${not #lists.isEmpty(files)}">
+                    <div class="gallery" th:each="file : ${files}">
+                        <a target="_blank">
+                            <img th:src="@{/admin/showPicture(path=${file.url})}" width="800" height="600">
+                        </a>
+                        <div class="desc"><p th:text="${file.name}"></p></div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

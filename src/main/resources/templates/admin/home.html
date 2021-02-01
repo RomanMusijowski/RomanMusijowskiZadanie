@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Admin page</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+        <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+              th:href="@{/webjars/bootstrap/3.3.5/css/bootstrap.min.css}"
+              rel="stylesheet" media="screen"/>
+
+        <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+                th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+
+        <link href="../../../static/css/spring-core.css"
+              th:href="@{css/spring-core.css}" rel="stylesheet" media="screen"/>
+    </head>
+
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top" th:fragment="header" th:object="${user}">
+            <div class="container">
+
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li th:classappend="${module == 'home' ? 'active' : ''}">
+                            <a href="/user/list">Users</a>
+                        </li>
+
+                        <li th:classappend="${module == 'home' ? 'active' : ''}">
+                            <a href="admin/new">New gallery</a>
+                        </li>
+                        <li>
+                            <a href="/logout" th:href="@{#}" onclick="$('#form').submit();">
+                                <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp;Logout
+                            </a>
+                            <form style="visibility: hidden" id="form" method="post" action="#" th:action="@{/logout}"></form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="container">
+                <div th:if="${not #lists.isEmpty(galleries)}">
+                    <h2>Timeline</h2>
+                    <table class="table table-striped" >
+                        <tr>
+                            <th>Name</th>
+                            <th>Show</th>
+                            <th>Delete</th>
+                        </tr>
+
+                        <tr th:each="gallery : ${galleries}">
+                            <td th:text="${gallery.name}"></td>
+                            <td><a th:href="${'/admin/show/' + gallery.id}">Show</a> </td>
+                            <td><a th:href="${'/admin/delete/' + gallery.id}">Delete</a> </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
